@@ -1,5 +1,7 @@
 const $ = id => document.getElementById(id);
-const COLORS = ['#0E7C6B','#C4451C','#D69E2E','#3B6FB6','#8A5CC2','#C2527A','#5E7471','#2F9E8F'];
+const COLORS = ['#FFC83D','#FF6B4A','#2FD4A0','#5B8CFF','#B27BFF','#FF7FB0','#8E86C9','#22C5D1'];
+const CATS = ['Food','Transport','Bills','Shopping','Health','Fun','Salary','Other'];
+const colorOf = c => COLORS[Math.max(0, CATS.indexOf(c))];
 const KEY = 'budget-buddy-v2';
 let state = load(), lastDeleted = null, toastTimer;
 
@@ -65,10 +67,13 @@ function render() {
   const byCat = Object.entries(map).sort((a, b) => b[1] - a[1]);
 
   $('insights').innerHTML = insights(m, income, expense, byCat).map(s => `<li>${s}</li>`).join('');
-  $('cats').innerHTML = byCat.map(([c, v], i) => `
+  $('cats').innerHTML = byCat.map(([c, v]) => `
     <div class="row"><span>${esc(c)}</span>
-    <div class="bar"><i style="width:${v / expense * 100}%;background:${COLORS[i % COLORS.length]}"></i></div>
+    <div class="bar"><i style="width:${v / expense * 100}%;background:${colorOf(c)}"></i></div>
     <span>${money(v)} (${Math.round(v / expense * 100)}%)</span></div>`).join('') || '<p class="help">No spending to show.</p>';
+
+  $('spread').innerHTML = byCat.map(([c, v]) => `<i style="flex:${v};background:${colorOf(c)}" title="${esc(c)}: ${money(v)}"></i>`).join('');
+  $('legend').innerHTML = byCat.map(([c]) => `<span><b style="background:${colorOf(c)}"></b>${esc(c)}</span>`).join('') || '<span>No spending yet</span>';
 
   const months = [-5, -4, -3, -2, -1, 0].map(n => shift(m, n));
   const data = months.map(k => ({ k, i: sum(inMonth(k), 'income'), o: sum(inMonth(k), 'expense') }));
@@ -88,7 +93,7 @@ function render() {
   const rows = monthTx();
   $('empty').hidden = rows.length > 0;
   $('items').innerHTML = rows.map(t => `
-    <li><div><div class="name">${esc(t.note || t.category)}</div><div class="meta">${t.category} · ${t.date}</div></div>
+    <li><i class="dot" style="background:${colorOf(t.category)}"></i><div><div class="name">${esc(t.note || t.category)}</div><div class="meta">${t.category} · ${t.date}</div></div>
     <span class="amt ${t.type === 'income' ? 'in' : 'out'}">${t.type === 'income' ? '+' : '-'}${money(t.amount)}</span>
     <button data-id="${t.id}" aria-label="Delete transaction">Delete</button></li>`).join('');
 }

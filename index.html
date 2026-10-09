@@ -38,11 +38,21 @@
     </div>
   </section>
 
-  <section class="cards" aria-live="polite">
-    <div class="card"><p class="label">Balance</p><p class="num" id="balance">0</p><p class="note">Income minus spending</p></div>
-    <div class="card"><p class="label">Income</p><p class="num in" id="income">0</p><p class="note">Money received</p></div>
-    <div class="card"><p class="label">Spent</p><p class="num out" id="expense">0</p><p class="note">Money paid out</p></div>
-    <div class="card"><p class="label">Savings rate</p><p class="num" id="rate">–</p><p class="note">Share of income you kept</p></div>
+  <section class="hero" aria-live="polite">
+    <div class="hero-main">
+      <p class="label">Balance this month</p>
+      <p class="big" id="balance">0</p>
+      <p class="note">Income minus spending</p>
+    </div>
+    <dl class="stats">
+      <div><dt>Income</dt><dd class="in" id="income">0</dd></div>
+      <div><dt>Spent</dt><dd class="out" id="expense">0</dd></div>
+      <div><dt>Savings rate</dt><dd id="rate">–</dd></div>
+    </dl>
+    <div class="spread-wrap">
+      <div class="spread" id="spread" role="img" aria-label="Spending by category"></div>
+      <div class="legend" id="legend"></div>
+    </div>
   </section>
 
   <div class="cols">
