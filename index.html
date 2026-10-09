@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Budget Buddy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Budget Buddy</h1>
+    <p class="sub">Track what comes in and goes out. Data stays in your browser.</p>
+  </div>
+  <div class="controls">
+    <label>Month <input type="month" id="month"></label>
+    <label>Currency
+      <select id="currency">
+        <option>MYR</option><option>USD</option><option>EUR</option><option>GBP</option><option>SGD</option><option>JPY</option>
+      </select>
+    </label>
+  </div>
+</header>
+
+<main>
+  <section class="balance" aria-live="polite">
+    <p class="label">Balance this month</p>
+    <p class="big" id="balance">0.00</p>
+    <div class="split">
+      <span>In <b id="income">0.00</b></span>
+      <span>Out <b id="expense">0.00</b></span>
+    </div>
+    <div class="stack" id="stack" role="img" aria-label="Spending by category"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Add transaction</h2>
+    <form id="form">
+      <div class="seg" role="radiogroup" aria-label="Type">
+        <label><input type="radio" name="type" value="expense" checked><span>Expense</span></label>
+        <label><input type="radio" name="type" value="income"><span>Income</span></label>
+      </div>
+      <label>Amount <input type="number" id="amount" min="0.01" step="0.01" required placeholder="0.00"></label>
+      <label>Category
+        <select id="category">
+          <option>Food</option><option>Transport</option><option>Bills</option>
+          <option>Shopping</option><option>Health</option><option>Fun</option>
+          <option>Salary</option><option>Other</option>
+        </select>
+      </label>
+      <label>Date <input type="date" id="date" required></label>
+      <label>Note <input type="text" id="note" maxlength="60" placeholder="Optional"></label>
+      <button type="submit" class="primary">Add transaction</button>
+    </form>
+
+    <h2>Monthly budget</h2>
+    <label>Spending limit <input type="number" id="budget" min="0" step="1" placeholder="No limit set"></label>
+    <div class="meter"><div id="meterFill"></div></div>
+    <p class="hint" id="budgetText"></p>
+  </section>
+
+  <section class="panel list">
+    <div class="listhead">
+      <h2>Transactions</h2>
+      <div class="filters">
+        <input type="search" id="search" placeholder="Search notes" aria-label="Search notes">
+        <select id="filterCat" aria-label="Filter by category"><option value="">All categories</option></select>
+        <button id="export">Export CSV</button>
+        <button id="clear" class="danger">Clear all</button>
+      </div>
+    </div>
+    <ul id="items"></ul>
+    <p class="empty" id="empty">No transactions for this month. Add one to get started.</p>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
