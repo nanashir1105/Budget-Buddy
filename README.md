@@ -1,35 +1,30 @@
 # Budget Buddy
 
-A lightweight personal expense tracker built with vanilla HTML, CSS and JavaScript. No framework, no backend, no database: everything is stored in the browser with `localStorage`.
+A personal expense tracker built with vanilla HTML, CSS and JavaScript. No framework, no backend, no database: everything is stored in the browser with `localStorage`.
 
 ## Features
-- Add income and expenses with category, date and note
-- Monthly balance, income and spending summary
-- Spending breakdown by category (stacked bar)
+- Add income and expenses with category, date and note, with inline validation
+- Summary cards: balance, income, spent and savings rate
+- Plain-language insights: biggest category, daily average, change vs last month, month-end projection
+- Spending breakdown by category with percentages
+- 6-month income vs spending chart
 - Monthly spending limit with progress meter
-- Search and filter transactions
-- Export the current view to CSV
-- Currency selector using `Intl.NumberFormat`
-- Responsive layout, dark mode, keyboard-friendly
+- Undo after deleting a transaction
+- Search, filter and CSV export
+- First-visit guide and one-click sample data
+- Currency selector (`Intl.NumberFormat`), dark mode, responsive, keyboard-friendly
 
 ## Run locally
-Open `index.html` in a browser, or serve the folder:
-
-```bash
-npx serve .
-```
+Open `index.html` in a browser, or run `npx serve .`
 
 ## Deploy
-Push to GitHub, then enable **Settings → Pages → Deploy from branch (main, root)**.
+Push to GitHub, then Settings → Pages → Deploy from branch (`main`, root).
 
 ## What I practised
 - DOM rendering and state management without a library
-- Persisting data with `localStorage` and handling corrupt data safely
-- Escaping user input to prevent XSS
-- Accessible forms, focus states, `prefers-color-scheme` and `prefers-reduced-motion`
+- Deriving insights from data (aggregation, month-over-month comparison, projection)
+- Safe `localStorage` use and escaping user input to prevent XSS
+- Accessible forms, focus states, `prefers-color-scheme`, `prefers-reduced-motion`
 
-## Ideas to extend
-- Recurring transactions
-- Import from CSV
-- Charts with Chart.js
-- Convert to React or Vue
+## Known limits
+Data lives in one browser only. A next step would be an API or cloud sync.

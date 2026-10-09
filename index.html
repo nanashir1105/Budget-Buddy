@@ -12,70 +12,98 @@
 <header class="top">
   <div>
     <h1>Budget Buddy</h1>
-    <p class="sub">Track what comes in and goes out. Data stays in your browser.</p>
+    <p class="sub">See where your money goes each month. Your data never leaves this browser.</p>
   </div>
   <div class="controls">
     <label>Month <input type="month" id="month"></label>
     <label>Currency
-      <select id="currency">
-        <option>MYR</option><option>USD</option><option>EUR</option><option>GBP</option><option>SGD</option><option>JPY</option>
-      </select>
+      <select id="currency"><option>MYR</option><option>USD</option><option>EUR</option><option>GBP</option><option>SGD</option><option>JPY</option></select>
     </label>
   </div>
 </header>
 
 <main>
-  <section class="balance" aria-live="polite">
-    <p class="label">Balance this month</p>
-    <p class="big" id="balance">0.00</p>
-    <div class="split">
-      <span>In <b id="income">0.00</b></span>
-      <span>Out <b id="expense">0.00</b></span>
+  <section class="intro" id="intro">
+    <div>
+      <h2>How it works</h2>
+      <ol>
+        <li><b>Add</b> every income and expense in the form.</li>
+        <li><b>Set a limit</b> for how much you want to spend this month.</li>
+        <li><b>Read the insights</b> to see trends and where to cut back.</li>
+      </ol>
     </div>
-    <div class="stack" id="stack" role="img" aria-label="Spending by category"></div>
-    <div class="legend" id="legend"></div>
-  </section>
-
-  <section class="panel">
-    <h2>Add transaction</h2>
-    <form id="form">
-      <div class="seg" role="radiogroup" aria-label="Type">
-        <label><input type="radio" name="type" value="expense" checked><span>Expense</span></label>
-        <label><input type="radio" name="type" value="income"><span>Income</span></label>
-      </div>
-      <label>Amount <input type="number" id="amount" min="0.01" step="0.01" required placeholder="0.00"></label>
-      <label>Category
-        <select id="category">
-          <option>Food</option><option>Transport</option><option>Bills</option>
-          <option>Shopping</option><option>Health</option><option>Fun</option>
-          <option>Salary</option><option>Other</option>
-        </select>
-      </label>
-      <label>Date <input type="date" id="date" required></label>
-      <label>Note <input type="text" id="note" maxlength="60" placeholder="Optional"></label>
-      <button type="submit" class="primary">Add transaction</button>
-    </form>
-
-    <h2>Monthly budget</h2>
-    <label>Spending limit <input type="number" id="budget" min="0" step="1" placeholder="No limit set"></label>
-    <div class="meter"><div id="meterFill"></div></div>
-    <p class="hint" id="budgetText"></p>
-  </section>
-
-  <section class="panel list">
-    <div class="listhead">
-      <h2>Transactions</h2>
-      <div class="filters">
-        <input type="search" id="search" placeholder="Search notes" aria-label="Search notes">
-        <select id="filterCat" aria-label="Filter by category"><option value="">All categories</option></select>
-        <button id="export">Export CSV</button>
-        <button id="clear" class="danger">Clear all</button>
-      </div>
+    <div class="intro-actions">
+      <button id="loadSample" class="primary">Load sample data</button>
+      <button id="dismissIntro">Hide this</button>
     </div>
-    <ul id="items"></ul>
-    <p class="empty" id="empty">No transactions for this month. Add one to get started.</p>
   </section>
+
+  <section class="cards" aria-live="polite">
+    <div class="card"><p class="label">Balance</p><p class="num" id="balance">0</p><p class="note">Income minus spending</p></div>
+    <div class="card"><p class="label">Income</p><p class="num in" id="income">0</p><p class="note">Money received</p></div>
+    <div class="card"><p class="label">Spent</p><p class="num out" id="expense">0</p><p class="note">Money paid out</p></div>
+    <div class="card"><p class="label">Savings rate</p><p class="num" id="rate">–</p><p class="note">Share of income you kept</p></div>
+  </section>
+
+  <div class="cols">
+    <aside>
+      <section class="panel">
+        <h2>Add a transaction</h2>
+        <form id="form" novalidate>
+          <div class="seg" role="radiogroup" aria-label="Type">
+            <label><input type="radio" name="type" value="expense" checked><span>Expense</span></label>
+            <label><input type="radio" name="type" value="income"><span>Income</span></label>
+          </div>
+          <label>Amount <input type="number" id="amount" min="0.01" step="0.01" placeholder="0.00" aria-describedby="err"></label>
+          <label>Category
+            <select id="category"><option>Food</option><option>Transport</option><option>Bills</option><option>Shopping</option><option>Health</option><option>Fun</option><option>Salary</option><option>Other</option></select>
+          </label>
+          <label>Date <input type="date" id="date"></label>
+          <label>Note <input type="text" id="note" maxlength="60" placeholder="e.g. Lunch with team"></label>
+          <p class="error" id="err" role="alert"></p>
+          <button type="submit" class="primary">Add transaction</button>
+        </form>
+      </section>
+      <section class="panel">
+        <h2>Monthly spending limit</h2>
+        <p class="help">Pick the most you want to spend this month. The bar fills as you spend.</p>
+        <label>Limit <input type="number" id="budget" min="0" step="1" placeholder="No limit set"></label>
+        <div class="meter"><div id="meterFill"></div></div>
+        <p class="help" id="budgetText"></p>
+      </section>
+    </aside>
+
+    <div class="stack">
+      <section class="panel">
+        <h2>Insights</h2>
+        <ul class="insights" id="insights"></ul>
+      </section>
+      <section class="panel">
+        <h2>Where your money went</h2>
+        <div id="cats"></div>
+      </section>
+      <section class="panel">
+        <h2>Last 6 months</h2>
+        <p class="help">Green is income, orange is spending.</p>
+        <div class="trend" id="trend"></div>
+      </section>
+      <section class="panel">
+        <div class="listhead">
+          <h2>Transactions</h2>
+          <div class="filters">
+            <input type="search" id="search" placeholder="Search notes" aria-label="Search notes">
+            <select id="filterCat" aria-label="Filter by category"><option value="">All categories</option></select>
+            <button id="export">Export CSV</button>
+            <button id="clear" class="danger">Clear all</button>
+          </div>
+        </div>
+        <ul id="items"></ul>
+        <p class="help" id="empty">Nothing here yet. Add a transaction or load sample data.</p>
+      </section>
+    </div>
+  </div>
 </main>
+<div class="toast" id="toast" role="status" hidden><span id="toastMsg"></span><button id="undo">Undo</button></div>
 <script src="app.js"></script>
 </body>
 </html>
